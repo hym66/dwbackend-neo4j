@@ -1,10 +1,9 @@
 package cn.edu.tongji.dwbackend.service.impl;
 
-import cn.edu.tongji.dwbackend.entity.node.Actor;
 import cn.edu.tongji.dwbackend.entity.node.Movie;
 import cn.edu.tongji.dwbackend.entity.relation.Cooperate;
 import cn.edu.tongji.dwbackend.entity.relation.Play;
-import cn.edu.tongji.dwbackend.repository.MovieNodeRepository;
+import cn.edu.tongji.dwbackend.repository.MovieRepository;
 import cn.edu.tongji.dwbackend.service.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,7 +21,7 @@ import java.util.List;
 @Service
 public class MovieServiceImpl implements MovieService {
     @Autowired
-    MovieNodeRepository movieNodeRepository;
+    MovieRepository movieNodeRepository;
 
     @Override
     public Movie findNodeById(Long id) {

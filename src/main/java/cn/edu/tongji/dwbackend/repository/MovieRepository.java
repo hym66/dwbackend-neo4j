@@ -1,6 +1,5 @@
 package cn.edu.tongji.dwbackend.repository;
 
-import cn.edu.tongji.dwbackend.entity.node.Actor;
 import cn.edu.tongji.dwbackend.entity.node.Movie;
 import cn.edu.tongji.dwbackend.entity.relation.Cooperate;
 import cn.edu.tongji.dwbackend.entity.relation.Play;
@@ -11,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface MovieNodeRepository extends Neo4jRepository<Movie,Long> {
+public interface MovieRepository extends Neo4jRepository<Movie,Long> {
     @Query("MATCH (n:Movie{movie_id:$id}) RETURN n")
     Movie findNodeById(Long id);
 
