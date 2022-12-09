@@ -3,6 +3,9 @@ package cn.edu.tongji.dwbackend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
@@ -20,38 +23,35 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @Throw $
  */
 
+/**
+ * Swagger2配置
+ * @author
+ */
 @Configuration
 @EnableSwagger2
-public class SwaggerConfig {
+@EnableWebMvc
+public class SwaggerConfig implements WebMvcConfigurer {
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
-    /**
-     * 创建API
-     */
-    @Bean
-    public Docket createRestApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                // 详细定制
-                .apiInfo(apiInfo("1.0.0"))
-                .select()
-                // 指定当前包路径
-                .apis(RequestHandlerSelectors.basePackage("cn.edu.tongji.dwbackend.controller"))
-                // 扫描所有
-                .paths(PathSelectors.any())
-                .build();
+        registry.addResourceHandler("/**").addResourceLocations(
+                "classpath:/static/");
+        registry.addResourceHandler("swagger-ui.html").addResourceLocations(
+                "classpath:/META-INF/resources/");
+        registry.addResourceHandler("/webjars/**").addResourceLocations(
+                "classpath:/META-INF/resources/webjars/");
+        WebMvcConfigurer.super.addResourceHandlers(registry);
     }
 
-    /**
-     * 添加摘要信息
-     *
-     * @param version
-     * @return
-     */
-    private ApiInfo apiInfo(String version) {
-        // 用ApiInfoBuilder进行定制
-        return new ApiInfoBuilder()
-                .title("数据仓库接口文档")
-                .version(version)
-                .build();
+    @Bean
+    public Docket createRestApi() {
+        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo()).select()
+                .apis(RequestHandlerSelectors.basePackage("cn.edu.tongji.dwbackend.controller"))
+                .paths(PathSelectors.any()).build();
+    }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder().title("API文档").version("1.0").build();
     }
 }
 
